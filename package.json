@@ -1,22 +1,22 @@
 {
-  "name": "vaccine-slot-discord-bot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nikiljos/vaccine-slot-discord-bot.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nikiljos/vaccine-slot-discord-bot/issues"
-  },
-  "homepage": "https://github.com/nikiljos/vaccine-slot-discord-bot#readme",
-  "dependencies": {
-    "axios": "^0.21.1"
-  }
+    "name": "my-vaccinator",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nikiljos/my-vaccinator.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/nikiljos/my-vaccinator/issues"
+    },
+    "homepage": "https://github.com/nikiljos/my-vaccinator#readme",
+    "dependencies": {
+        "axios": "^0.21.1"
+    }
 }

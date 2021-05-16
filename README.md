@@ -1,2 +1,2 @@
-# vaccine-slot-discord-bot
+# my-vaccinator
  
