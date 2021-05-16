@@ -1,7 +1,6 @@
 {
     "name": "my-vaccinator",
     "version": "1.0.0",
-
     "description": "",
     "main": "index.js",
     "scripts": {
@@ -19,6 +18,8 @@
     },
     "homepage": "https://github.com/nikiljos/my-vaccinator#readme",
     "dependencies": {
-        "axios": "^0.21.1"
+        "axios": "^0.21.1",
+        "discord.js": "^12.5.3",
+        "dotenv": "^9.0.2"
     }
 }
