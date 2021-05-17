@@ -1,9 +1,11 @@
 module.exports = {
     name: 'vaccine',
     description: 'alert',
-    execute(message, args) {
+    execute(district, args) {
+
+
         const axios = require('axios')
-        const district = 300;
+            // const district = 300;
 
 
 
