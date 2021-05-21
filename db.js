@@ -25,7 +25,7 @@ const userSchema = new Schema({
 
     choice: [{
         disID: Number,
-        ageGp: String
+        ageGp: Number
     }]
 });
 
@@ -35,12 +35,6 @@ const userInput = new user({
     discordID: "nikiljos#9641",
     choice: [{
         disID: 300,
-        ageGp: "45+"
+        ageGp: 45
     }]
 })
-
-// userInput.save()
-//     .then(console.log("success"))
-//     .catch('error', () => {
-//         console.log(error)
-//     })
