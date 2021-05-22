@@ -6,6 +6,10 @@ dotenv.config();
 
 mongoose.connect(process.env.atlasURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
+var discordID
+var disID
+var ageGP
+
 var resultsObjectArray = [{
     districtID: 224,
     cap18: 0,
@@ -45,8 +49,26 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log("connection successful")
-    res = Model.find({ "choice.disID": 300 }, { "discordID": 1, "_id": 0 })
-    console.log(res)
+        // { "choice.disID": 300 }, { "discordID": 1, "_id": 0 }
+
+    Model.find(function(err, data) {
+        if (err) {
+            console.log(err)
+        } else {
+            discordID = data[0].discordID
+            disID = data[0].choice[0].disID
+            ageGP = data[0].choice[0].ageGp
+
+            console.log(discordID + " " + disID + " " + ageGP)
+
+
+
+
+
+
+        }
+    })
+
 
 
 
@@ -56,7 +78,7 @@ db.once('open', function() {
 function exec() {
     var iterator = resultsObjectArray.values();
     for (let elements of iterator) {
-        console.log(Model.find({ "choice.disID": "elements.districtID" }, { "discordID": 1, }))
+
     }
 }
 
