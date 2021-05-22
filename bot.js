@@ -6,8 +6,8 @@ const PREFIX = "!";
 var Dis;
 var Age;
 var Id;
+var userArray;
 //var Doz; --not for now
-
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.on('ready', () => {
@@ -26,7 +26,7 @@ client.on('message', (message) =>
             }
             if (message.content.startsWith(PREFIX)) {
             const [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
-            if (CMD_NAME === 'vaccine') {
+                if (CMD_NAME === 'vaccine') {
                 Id=message.member.id;
                 console.log(Id);
                 //message.reply('Enter your District'); --- Asking Question PART
@@ -43,8 +43,9 @@ client.on('message', (message) =>
                             {
                             if (message.content == '321' || message.content == '123') {
                                 Dis = message.content;
+                                message.react('👍');
                                 console.log(Dis);
-                                message.channel.send('<@'+ Id +`> Ok.Now enter your Age Category (18 or 45)`);
+                                message.channel.send('<@'+ Id +`> Ok.Now Enter your Age Category (18+ or 45+)`);
                                 message.channel.awaitMessages(filter,
                                     {
                                         max: 1,
@@ -55,20 +56,24 @@ client.on('message', (message) =>
                                         message = message.first()
                                         if (message.author.id == Id)
                                         {
-                                        if (message.content == '18' || message.content == '45') {
+                                            if (message.content == '18' || message.content == '45' || message.content == '18+' || message.content == '45+') {
                                             Age = message.content;
+                                            message.react('👍');
                                             console.log(Age);
-                                            message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon');
-                                            const userArray = [{
+                                                message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://image.freepik.com/free-vector/coronavirus-vaccine-syringe-vaccine-vial-flat-icons-treatment-coronavirus-isolated_108855-2244.jpg"]});
+                                            userArray = [{
                                                 discordID: Id, // String is shorthand for {type: String}
-
-                                                    choice: [{
+                                                choice: [{
                                                         disID: Dis,
-                                                        ageGp: Age,
-                                                    }]
-                                            }]
-                                            console.log(userArray[0]);
-
+                                                        ageGp: Age,}]
+                                                        }]
+                                                console.log(userArray[0]);
+                                            client.users.fetch(Id).then
+                                                ((user) => 
+                                                    {
+                                                    user.send('Hello ' + '<@' + Id + '>' + ' Your selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
+                                                    }
+                                                );
 
 
                                         }
@@ -87,7 +92,7 @@ client.on('message', (message) =>
                             }
                             else 
                             {
-                                message.channel.send('Wrong ID');
+                                message.channel.send('Wrong District ID');
                                 setTimeout(function() {
                                     message.channel.send('Type !vaccine do again');
                                 }, 2000);
@@ -100,4 +105,8 @@ client.on('message', (message) =>
             }
         }
     }
+   
 });
+
+
+
