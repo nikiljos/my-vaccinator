@@ -7,7 +7,6 @@ var Dis;
 var Age;
 var Id;
 //var Doz; --not for now
-
 client.login(process.env.DISCORDJS_BOT_TOKEN);
 
 client.on('ready', () => {
