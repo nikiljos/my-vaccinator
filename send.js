@@ -59,11 +59,6 @@ db.once('open', function() {
             disID = data[0].choice[0].disID
             ageGP = data[0].choice[0].ageGp
 
-            console.log(discordID + " " + disID + " " + ageGP)
-
-
-
-
 
 
         }
