@@ -27,6 +27,7 @@ client.on('message', (message) =>
             if (message.content.startsWith(PREFIX)) {
             const [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
                 if (CMD_NAME === 'vaccine') {
+                    message.react('💉');
                 Id=message.member.id;
                 console.log(Id);
                 //message.reply('Enter your District'); --- Asking Question PART
@@ -60,7 +61,7 @@ client.on('message', (message) =>
                                             Age = message.content;
                                             message.react('👍');
                                             console.log(Age);
-                                                message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://image.freepik.com/free-vector/coronavirus-vaccine-syringe-vaccine-vial-flat-icons-treatment-coronavirus-isolated_108855-2244.jpg"]});
+                                            message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://image.freepik.com/free-vector/coronavirus-vaccine-syringe-vaccine-vial-flat-icons-treatment-coronavirus-isolated_108855-2244.jpg"]});
                                             userArray = [{
                                                 discordID: Id, // String is shorthand for {type: String}
                                                 choice: [{
@@ -71,7 +72,7 @@ client.on('message', (message) =>
                                             client.users.fetch(Id).then
                                                 ((user) => 
                                                     {
-                                                    user.send('Hello ' + '<@' + Id + '>' + ' Your selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
+                                                    user.send('Hello! ' + '<@' + Id + '>' + '\nYour selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
                                                     }
                                                 );
 
@@ -79,7 +80,8 @@ client.on('message', (message) =>
                                         }
                                         else 
                                         {
-                                            message.channel.send('Wrong Category');
+                                            message.react('👎');
+                                            message.channel.send('Wrong Age Category');
                                             setTimeout(function () {
                                             message.channel.send('Type !vaccine do it again');
                                             }, 2000);
@@ -87,19 +89,26 @@ client.on('message', (message) =>
                                     }
                                     })
                                     .catch(collected => {
-                                    message.channel.send('Timeout!');
+                                        message.channel.send('Timeout!🕐');
+                                        setTimeout(function () {
+                                        message.channel.send('Type !vaccine do it again');
+                                        }, 2000);
                                     });
                             }
                             else 
                             {
+                                message.react('👎');
                                 message.channel.send('Wrong District ID');
                                 setTimeout(function() {
-                                    message.channel.send('Type !vaccine do again');
+                                    message.channel.send('Type !vaccine do it again');
                                 }, 2000);
                             }}
                         })
                         .catch(collected => {
-                            message.channel.send('Timeout!');
+                            message.channel.send('Timeout!🕐');
+                            setTimeout(function () {
+                            message.channel.send('Type !vaccine do it again');
+                            }, 2000);
                         });
                 })
             }
