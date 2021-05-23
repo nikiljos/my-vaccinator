@@ -10,6 +10,8 @@ var discordID
 var disID
 var ageGP
 
+
+
 const userSchema = new Schema({
     discordID: String, // String is shorthand for {type: String}
 
@@ -35,6 +37,11 @@ db.once('open', function() {
             discordID = data[0].discordID
             disID = data[0].choice[0].disID
             ageGP = data[0].choice[0].ageGp
+            data.forEach(() => {
+
+            })
+
+
 
         }
     })
@@ -44,16 +51,3 @@ db.once('open', function() {
 
 
 });
-
-function exec() {
-    var iterator = resultsObjectArray.values();
-    for (let elements of iterator) {
-
-    }
-}
-
-
-
-// for (let elements of iterator) {
-//     console.log(db.users.find({ "choice.disID": "elements.districtID" }, { "discordID": 1, }))
-// }
