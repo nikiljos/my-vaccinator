@@ -1,6 +1,6 @@
 ![BFH Banner](https://trello-attachments.s3.amazonaws.com/542e9c6316504d5797afbfb9/542e9c6316504d5797afbfc1/39dee8d993841943b5723510ce663233/Frame_19.png)
 # myVaccinator
-myVaccinator is a discord bot that alerts you about the available vaccination slots in your area every hour.  Simply type `!vaccine` in a common server and get your jab the smart way.
+myVaccinator is a discord bot that alerts you about the available vaccination slots in your area every hour.  Simply type `!vaccine` in a common server and get your vaccination slot the smart way.
 ## Team members
 1. [Nikhil Jose](https://github.com/nikiljos)
 2. [Midhun Mathew](https://github.com/memidhun)
@@ -9,12 +9,12 @@ BFH/receEVi8kY4wfVJJy/2021
 ## Link to product walkthrough
 [link to video]
 ## How it Works ?
-When you type `!vaccine`, required details are collected conversationaly by the bot. It then stores this data to a mongoDB database and and sends you alerts on regular intervals as DM in discord. Vaccination slot details are fetched using the CoWin API. In order to overcome the rate limtations of the API the server caches the slot availability data every 10 minutes so that the APUI limit will never be exhausted
+When you type `!vaccine`, required details are collected conversationaly by the bot. It then stores this data to a mongoDB database and and sends you alerts on regular intervals as DM in discord. Vaccination slot details are fetched using the CoWin API. In order to overcome the rate limtations of the API the server caches the slot availability data every 10 minutes so that the API limit will never be exhausted.
 Embed video of project demo
 ## Packages used
 axios - v0.21.1  
 discord.js - v12.5.3  
-dotenv- -v9.0.2  
+dotenv -v9.0.2  
 mongoose - v5.12.10  
 node-cron - v3.0.0  
 ## How to configure
