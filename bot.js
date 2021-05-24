@@ -317,9 +317,11 @@ function flow(districtArray) {
 
       array45.push("\nAvailble slots for 45+ category: " + cap45)
       array45.push("Total centres listed: " + x)
+      array45.push("Book your slots on https://selfregistration.cowin.gov.in/")
 
       array18.push("\nAvailble slots for 18+ category: " + cap18)
       array18.push("Total centres listed: " + x)
+      array18.push("Book your slots on https://selfregistration.cowin.gov.in/")
 
       // Here array.values() function is called.
       var iterator = array45.values();
