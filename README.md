@@ -28,7 +28,7 @@ In order to run the bot on your own Server and Database,
 * Clone the repo
 * Install required packages
 * Run the app using `node bot.js`
-* 
+
 ## How to Use
 In a common server type `!vaccine` to invoke the bot and start recieving alerts.  
 The bot is not open for public use as of now so it may not work properly in your discord server unless it is deployed in your own Server and Databases
