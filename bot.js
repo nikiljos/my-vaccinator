@@ -21,22 +21,30 @@ var distArray = [{ "district_id": 301, "district_name": "Alappuzha" }, { "distri
 
 
 
-
-// cron.schedule('0 */2 * * * *', () => {
 let resultsObjectArray = new Array();
+console.log("updating data cache")
 for (var i = 0; i < distArray.length; i++) {
-  console.log(distArray[i])
+  // console.log(distArray[i])
   flow(distArray[i]);
-  //   console.log(r)
+  // console.log("data update")
   //   resultsObjectArray.push(r);
 }
-console.log(resultsObjectArray)
+
+cron.schedule('0 5,15,25,35,45,55 * * * *', () => {
+  console.log("updating data cache")
+  for (var i = 0; i < distArray.length; i++) {
+    // console.log(distArray[i])
+    flow(distArray[i]);
+    // console.log("data update")
+    //   resultsObjectArray.push(r);
+  }
+  // console.log(resultsObjectArray)
 
 
-// })
+})
 
 
-cron.schedule('0 28 * * * *', () => {
+cron.schedule('0 0 * * * *', () => {
   sendUser();
 })
 
@@ -79,21 +87,23 @@ const userSchema = new Schema({
 const user = mongoose.model("user", userSchema)
 
 client.on('message', (message) => {
-    if (message.author.bot) return; {
+    if (message.author.bot) return;
+    if (message.guild === null) return; {
       if (message.content === '!help') //|| message.content === 'Help'
       {
-        message.reply('Hello there! Type !vaccine to book your slots');
+        message.reply('Hello there! Type ``!vaccine`` to book your slots');
       }
       if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
 
         if (CMD_NAME === 'vaccine') {
+          message.react('💉')
 
           Id = message.member.id;
-          console.log(Id);
+          // console.log(Id);
           //message.reply('Enter your District'); --- Asking Question PART
           let filter = m => m.author.id === message.author.id
-          message.channel.send('<@' + Id + `> Enter your District ID`).then(() => {
+          message.channel.send('<@' + Id + `> Enter your District ID`, { files: ["https://ik.imagekit.io/nik/districts-myvac_RrklJ79ZX.png"] }).then(() => {
             message.channel.awaitMessages(filter, {
                 max: 1,
                 time: 30000,
@@ -102,10 +112,10 @@ client.on('message', (message) => {
               .then(message => {
                 message = message.first()
                 if (message.author.id == Id) {
-                  if (message.content == '225' || message.content == '123' || message.content == '301') {
+                  if (message.content == '301' || message.content == '307' || message.content == '306' || message.content == '297' || message.content == '295' || message.content == '298' || message.content == '304' || message.content == '305' || message.content == '302' || message.content == '300' || message.content == '308' || message.content == '303' || message.content == '296' || message.content == '299') {
                     Dis = message.content;
                     message.react('👍');
-                    console.log(Dis);
+                    // console.log(Dis);
                     message.channel.send('<@' + Id + `> Ok.Now Enter your Age Category (18+ or 45+)`);
                     message.channel.awaitMessages(filter, {
                         max: 1,
@@ -115,10 +125,16 @@ client.on('message', (message) => {
                       .then(ua = message => {
                         message = message.first()
                         if (message.author.id == Id) {
-                          if (message.content == '18' || message.content == '45') {
-                            Age = message.content;
+                          if (message.content == '18' || message.content == '45' || message.content == '18+' || message.content == '45+') {
+                            if (message.content == '18+') {
+                              Age = 18
+                            } else if (message.content == '45+') {
+                              Age = 45
+                            } else {
+                              Age = message.content
+                            }
                             message.react('👍');
-                            console.log(Age);
+                            // console.log(Age);
                             userArray = [{
                               discordID: Id,
                               choice: [{
@@ -127,7 +143,7 @@ client.on('message', (message) => {
                               }]
                             }]
 
-                            message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://image.freepik.com/free-vector/coronavirus-vaccine-syringe-vaccine-vial-flat-icons-treatment-coronavirus-isolated_108855-2244.jpg"] })
+                            message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://ik.imagekit.io/nik/thanks-myvac_R0-60xlpN.png"] })
                               .then(() => {
 
                                 // console.log(userArray[0])
@@ -154,7 +170,7 @@ client.on('message', (message) => {
                           } else {
                             message.channel.send('Wrong Category');
                             setTimeout(function() {
-                              message.channel.send('Type !vaccine and try again');
+                              message.channel.send('Type ``!vaccine`` and try again');
                             }, 2000);
                           }
                         }
@@ -167,7 +183,7 @@ client.on('message', (message) => {
                   } else {
                     message.channel.send('Wrong District ID');
                     setTimeout(function() {
-                      message.channel.send('Type !vaccine and try again');
+                      message.channel.send('Type ``!vaccine`` and try again');
                     }, 2000);
                   }
                 }
@@ -274,7 +290,7 @@ function flow(districtArray) {
         // console.log(y)
         for (n = 0; n < y; n++) {
 
-          console.log()
+          // console.log()
 
           var cap = cowinData.centers[m].sessions[n].available_capacity;
           var d1Cap = cowinData.centers[m].sessions[n].available_capacity_dose1
@@ -365,16 +381,16 @@ function sendDM(userArray) {
   //   console.log("in", resultsObjectArray[0].districtID)
 
   for (var x = 0; x < 16; x++) {
-    console.log("in56", resultsObjectArray[x].districtID)
+    // console.log("in56", resultsObjectArray[x].districtID)
     if (userArray.choice[0].disID == resultsObjectArray[x].districtID) {
 
       if (userArray.choice[0].ageGp == 18) {
-        console.log("in1", userArray.choice[0])
+        // console.log("in1", userArray.choice[0])
         mess = resultsObjectArray[x].result18.slice(0, 2000)
         return mess
 
       } else if (userArray.choice[0].ageGp == 45) {
-        console.log("in2")
+        // console.log("in2")
         mess = resultsObjectArray[x].result45.slice(0, 2000)
         return mess
       }
@@ -436,7 +452,7 @@ function log(ar) {
       break;
 
   }
-  console.log(resultsObjectArray)
+  // console.log("done")
 }
 
 
@@ -467,7 +483,7 @@ function sendUser() {
         dataToSend
       }) => (client.users.fetch(userToSend, false).then((user) => {
 
-        console.log(nx, dataToSend, userToSend)
+        // console.log(nx, dataToSend, userToSend)
         user.send(dataToSend)
 
       }))))
