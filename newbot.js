@@ -17,17 +17,28 @@ var distArray = [{ "district_id": 301, "district_name": "Alappuzha" }, { "distri
   { "district_id": 303, "district_name": "Thrissur" }, { "district_id": 299, "district_name": "Wayanad" }, { "district_id": 225, "district_name": "Baramulla" }, { "district_id": 237, "district_name": "Rajouri" }
 ];
 
-let resultsObjectArray = [];
+
+
+
+
 
 // cron.schedule('0 */2 * * * *', () => {
-
+let resultsObjectArray = new Array();
 for (var i = 0; i < distArray.length; i++) {
-  resultsObjectArray[i] = flow(distArray[i]);
+  console.log(distArray[i])
+  flow(distArray[i]);
+  //   console.log(r)
+  //   resultsObjectArray.push(r);
 }
+console.log(resultsObjectArray)
 
 
 // })
 
+
+cron.schedule('0 28 * * * *', () => {
+  sendUser();
+})
 
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
@@ -91,7 +102,7 @@ client.on('message', (message) => {
               .then(message => {
                 message = message.first()
                 if (message.author.id == Id) {
-                  if (message.content == '225' || message.content == '123') {
+                  if (message.content == '225' || message.content == '123' || message.content == '301') {
                     Dis = message.content;
                     message.react('👍');
                     console.log(Dis);
@@ -119,7 +130,7 @@ client.on('message', (message) => {
                             message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://image.freepik.com/free-vector/coronavirus-vaccine-syringe-vaccine-vial-flat-icons-treatment-coronavirus-isolated_108855-2244.jpg"] })
                               .then(() => {
 
-                                console.log(userArray[0])
+                                // console.log(userArray[0])
 
 
                                 userInput = new user(userArray[0])
@@ -130,6 +141,7 @@ client.on('message', (message) => {
                                       resultDM = sendDM(userArray[0])
                                       user.send('Hello ' + '<@' + Id + '>' + ' Your selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
                                       user.send(resultDM)
+                                        //   console.log(distArray)
                                     });
 
                                   })
@@ -225,11 +237,12 @@ function flow(districtArray) {
 
   axios.get(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:89.0) Gecko/20100101 Firefox/89.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
       },
     }, )
-    .then(function(response) {
+    .then((response) => {
       dName = districtArray.district_name
+      district = districtArray.district_id
 
       cowinData = response.data
 
@@ -261,6 +274,8 @@ function flow(districtArray) {
         // console.log(y)
         for (n = 0; n < y; n++) {
 
+          console.log()
+
           var cap = cowinData.centers[m].sessions[n].available_capacity;
           var d1Cap = cowinData.centers[m].sessions[n].available_capacity_dose1
           var d2Cap = cowinData.centers[m].sessions[n].available_capacity_dose2
@@ -281,10 +296,6 @@ function flow(districtArray) {
             }
           }
 
-
-
-
-
         }
       }
 
@@ -293,17 +304,6 @@ function flow(districtArray) {
 
       array18.push("\nAvailble slots for 18+ category: " + cap18)
       array18.push("Total centres listed: " + x)
-
-
-
-    })
-    .catch(function(error) {
-      // handle error
-      console.log(error);
-      // console.log("error in cowin response")
-    })
-    .then(function() {
-
 
       // Here array.values() function is called.
       var iterator = array45.values();
@@ -320,56 +320,161 @@ function flow(districtArray) {
       for (let elements of iterator2) {
         result18 = result18.concat(elements + "\n");
 
+        ar = ({
+          districtID: district,
+          districtName: dName,
+          cap18: cap18,
+          cap45: cap45,
+          result18: result18,
+          result45: result45
+
+        })
+        log(ar)
+          // console.log(ar)
+
+        // console.log(resultsObjectArray)
+        // return resultsObjectArray;
+
+
+
       }
-
-      resultsObjectArray = ({
-        districtID: district,
-        districtName: dName,
-        cap18: cap18,
-        cap45: cap45,
-        result18: result18,
-        result45: result45
-
-      })
-
-      // console.log(resultsObjectArray)
-
-      return resultsObjectArray;
-
-
     })
-};
+    .catch(function(error) {
+      // handle error
+      console.log(error);
+      // console.log("error in cowin response")
+    })
+
+
+  //   return aR
 
 
 
-() => {
-  for (var i = 0; i < 16; i++) {
-    if (userArray.choice[0].disID == resultsObjectArray[i].districtID) {
+
+  // function ss() {
+  //   console.log("test", distArray)
+  //   console.log()
+  // }
+
+
+
+}
+
+function sendDM(userArray) {
+
+  //   console.log("in", resultsObjectArray[0].districtID)
+
+  for (var x = 0; x < 16; x++) {
+    console.log("in56", resultsObjectArray[x].districtID)
+    if (userArray.choice[0].disID == resultsObjectArray[x].districtID) {
+
       if (userArray.choice[0].ageGp == 18) {
-
-        return resultsObjectArray[i].result18
+        console.log("in1", userArray.choice[0])
+        mess = resultsObjectArray[x].result18.slice(0, 2000)
+        return mess
 
       } else if (userArray.choice[0].ageGp == 45) {
-        return resultsObjectArray[i].result45
+        console.log("in2")
+        mess = resultsObjectArray[x].result45.slice(0, 2000)
+        return mess
       }
     }
   }
 
 }
 
+function log(ar) {
+
+  switch (ar.districtID) {
+    case 301:
+      resultsObjectArray[0] = ar;
+      break;
+    case 307:
+      resultsObjectArray[1] = ar;
+      break;
+    case 306:
+      resultsObjectArray[2] = ar;
+      break;
+    case 297:
+      resultsObjectArray[3] = ar;
+      break;
+    case 295:
+      resultsObjectArray[4] = ar;
+      break;
+    case 298:
+      resultsObjectArray[5] = ar;
+      break;
+    case 304:
+      resultsObjectArray[6] = ar;
+      break;
+    case 305:
+      resultsObjectArray[7] = ar;
+      break;
+    case 302:
+      resultsObjectArray[8] = ar;
+      break;
+    case 308:
+      resultsObjectArray[9] = ar;
+      break;
+    case 300:
+      resultsObjectArray[10] = ar;
+      break;
+    case 296:
+      resultsObjectArray[11] = ar;
+      break;
+    case 303:
+      resultsObjectArray[12] = ar;
+      break;
+    case 299:
+      resultsObjectArray[13] = ar;
+      break;
+    case 225:
+      resultsObjectArray[14] = ar;
+      break;
+    case 237:
+      resultsObjectArray[15] = ar;
+      break;
+
+  }
+  console.log(resultsObjectArray)
+}
+
+
 const Model = mongoose.model('users', userSchema);
 
 
+function sendUser() {
 
 
 
-Model.find(() => {
-  if (err) {
-    console.log(err)
-  } else {
-    discordID = data[0].discordID
-    disID = data[0].choice[0].disID
-    ageGP = data[0].choice[0].ageGp
+  Model.find(async(err, data) => {
+    if (err) {
+      console.log(err)
+    } else {
+      let sendArray = []
+      for (var nx = 0; nx < data.length; nx++) {
+        let dataToSend = sendDM(data[nx])
+        let userToSend = data[nx].discordID
+        sendArray.push({
+          userToSend,
+          dataToSend
+        })
 
-  }
-})
+
+      }
+      await Promise.all(sendArray.map(({
+        userToSend,
+        dataToSend
+      }) => (client.users.fetch(userToSend, false).then((user) => {
+
+        console.log(nx, dataToSend, userToSend)
+        user.send(dataToSend)
+
+      }))))
+
+
+
+    }
+  })
+
+}
