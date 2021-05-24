@@ -1,4 +1,4 @@
-![BFH Banner](https://trello-attachments.s3.amazonaws.com/542e9c6316504d5797afbfb9/542e9c6316504d5797afbfc1/39dee8d993841943b5723510ce663233/Frame_19.png)
+![BFH Banner](https://ik.imagekit.io/nik/bfh-header_yKkg6ycdS.png)
 # myVaccinator
 myVaccinator is a discord bot that alerts you about the available vaccination slots in your area every hour.  Simply type `!vaccine` in a common server and get your vaccination slot the smart way.
 ## Team members
