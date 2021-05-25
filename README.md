@@ -13,7 +13,7 @@ BFH/receEVi8kY4wfVJJy/2021
 [https://vimeo.com/554606989](https://vimeo.com/554606989)
 
 ## How it Works ?
-When you type `!vaccine`, required details are collected conversationaly by the bot. It then stores this data to a mongoDB database and and sends you alerts on regular intervals as DM in discord. Vaccination slot details are fetched using the CoWin API. In order to overcome the rate limtations of the API the server caches the slot availability data every 10 minutes so that the API limit will never be exhausted.
+When you type `!vaccine`, required details are collected conversationaly by the bot. It then stores this data to a mongoDB database and and sends you alerts on regular intervals as DM in discord. Vaccination slot details are fetched using the [CoWin API](https://apisetu.gov.in/public/marketplace/api/cowin/cowin-public-v2#/). In order to overcome the rate limtations of the API the server caches the slot availability data every 10 minutes so that the API limit will never be exhausted.
 
 [Project Demo](https://user-images.githubusercontent.com/57913645/119452734-4eb02000-bd54-11eb-90e0-c60191e19f7a.mp4)
 
