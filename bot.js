@@ -91,7 +91,7 @@ client.on('message', (message) => {
     if (message.guild === null) return; {
       if (message.content === '!help') //|| message.content === 'Help'
       {
-        message.reply('Hello there! Type ``!vaccine`` to book your slots');
+        message.reply('Hello! I sense that you have asked for help', { files: ["https://ik.imagekit.io/nik/help-myvac_IFNQTIibz.png"] });
       }
       if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
@@ -99,7 +99,7 @@ client.on('message', (message) => {
         if (CMD_NAME === 'vaccine') {
           message.react('💉')
 
-          Id = message.member.id;
+          Id = message.author.id;
           // console.log(Id);
           //message.reply('Enter your District'); --- Asking Question PART
           let filter = m => m.author.id === message.author.id
@@ -116,7 +116,7 @@ client.on('message', (message) => {
                     Dis = message.content;
                     message.react('👍');
                     // console.log(Dis);
-                    message.channel.send('<@' + Id + `> Ok.Now Enter your Age Category (18+ or 45+)`);
+                    message.channel.send('<@' + Id + '> Ok.Now Enter your Age Category (18+ or 45+)');
                     message.channel.awaitMessages(filter, {
                         max: 1,
                         time: 30000,
@@ -197,6 +197,15 @@ client.on('message', (message) => {
 
 
           })
+
+        } else if (CMD_NAME === 'unsubscribe') {
+          message.react('👋')
+
+          Id = message.member.id;
+
+          Model.deleteMany({ discordID: Id })
+            .then(message.channel.send('<@' + Id + '> Hope you enjoyed my services. You will no longer recieve slot notifications. You can type ``!vaccine`` anytime to add a new district and start recieving alerts... 😊'))
+
 
         }
 
