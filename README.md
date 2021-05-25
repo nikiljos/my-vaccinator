@@ -36,8 +36,11 @@ node-cron - v3.0.0
 ## How to configure
 In order to run the bot on your own Server and Database,
 * Clone the repo
-* Add a .env file with valid bot token and mongoDB connection string in the format specified in `.env.example`
+* `cd` into the repo folder
+* Add a `.env` file with valid bot token and mongoDB connection string in the format specified in `.env.example`
 * Run the app using `node bot.js`
+   * In order for the CoWin API to work properly, the bot should be hosted in a server located in India.  
+   * It works perfectly on AWS EC2 `t2.micro` instances hosted in Mumbai(Free tier eligible)
 
 ## How to Use
 In a common server type `!vaccine` in a channel to invoke the bot and start recieving alerts.  
