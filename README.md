@@ -36,7 +36,7 @@ node-cron - v3.0.0
 ## How to configure
 In order to run the bot on your own Server and Database,
 * Clone the repo
-* Install required packages
+* Add a .env file with valid bot token and mongoDB connection string in the format specified in `.env.example`
 * Run the app using `node bot.js`
 
 ## How to Use
