@@ -2,15 +2,17 @@ const { Client, Message } = require('discord.js');
 const client = new Client({ partials: ['MESSAGE', 'REACTION'] });
 const PREFIX = "!";
 require("dotenv").config();
-var Dis;
-var Age;
-var Id;
-var userArray;
-var ua;
+
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const cron = require('node-cron');
 
+let Dis;
+let Age;
+let Id;
+let userArray;
+
+//stores district ID of all supported districts to be used to update data in resultsObjectArray
 var distArray = [{ "district_id": 301, "district_name": "Alappuzha" }, { "district_id": 307, "district_name": "Ernakulam" }, { "district_id": 306, "district_name": "Idukki" }, { "district_id": 297, "district_name": "Kannur" },
   { "district_id": 295, "district_name": "Kasaragod" }, { "district_id": 298, "district_name": "Kollam" }, { "district_id": 304, "district_name": "Kottayam" }, { "district_id": 305, "district_name": "Kozhikode" },
   { "district_id": 302, "district_name": "Malappuram" }, { "district_id": 308, "district_name": "Palakkad" }, { "district_id": 300, "district_name": "Pathanamthitta" }, { "district_id": 296, "district_name": "Thiruvananthapuram" },
@@ -18,32 +20,29 @@ var distArray = [{ "district_id": 301, "district_name": "Alappuzha" }, { "distri
 ];
 
 
-
-
-
 let resultsObjectArray = new Array();
-console.log("updating data cache")
+
+//updates cowinData cache on app start
+let date_now = new Date();
+console.log(date_now, "updating data cache")
 for (var i = 0; i < distArray.length; i++) {
-  // console.log(distArray[i])
   flow(distArray[i]);
-  // console.log("data update")
-  //   resultsObjectArray.push(r);
 }
 
+//updates cowinData cache every 10 minutes 
 cron.schedule('0 5,15,25,35,45,55 * * * *', () => {
-  console.log("updating data cache")
+  let date_now = new Date();
+  console.log(date_now, "updating data cache")
+
   for (var i = 0; i < distArray.length; i++) {
-    // console.log(distArray[i])
     flow(distArray[i]);
-    // console.log("data update")
-    //   resultsObjectArray.push(r);
   }
-  // console.log(resultsObjectArray)
+
 
 
 })
 
-
+//sends vaccination updates every hour
 cron.schedule('0 0 * * * *', () => {
   sendUser();
 })
@@ -85,7 +84,7 @@ const userSchema = new Schema({
 });
 
 const user = mongoose.model("user", userSchema)
-
+  //This part listens for messages and give appropriate replies
 client.on('message', (message) => {
     if (message.author.bot) return;
     if (message.guild === null) return; {
@@ -98,11 +97,11 @@ client.on('message', (message) => {
 
         if (CMD_NAME === 'vaccine' || CMD_NAME === 'check' || CMD_NAME === 'VACCINE' || CMD_NAME === 'CHECK') {
           let userCMD = CMD_NAME
-            // console.log(userCMD)
+
           message.react('💉')
 
           Id = message.author.id;
-          // console.log(Id);
+
           //message.reply('Enter your District'); --- Asking Question PART
           let filter = m => m.author.id === message.author.id
           message.channel.send('<@' + Id + `> Enter your District ID`, { files: ["https://ik.imagekit.io/nik/districts-myvac_RrklJ79ZX.png"] }).then(() => {
@@ -117,8 +116,8 @@ client.on('message', (message) => {
                   if (message.content == '301' || message.content == '307' || message.content == '306' || message.content == '297' || message.content == '295' || message.content == '298' || message.content == '304' || message.content == '305' || message.content == '302' || message.content == '300' || message.content == '308' || message.content == '303' || message.content == '296' || message.content == '299') {
                     Dis = message.content;
                     message.react('👍');
-                    // console.log(Dis);
-                    message.channel.send('<@' + Id + '> Ok.Now Enter your Age Category (18+ or 45+)');
+
+                    message.channel.send('<@' + Id + '> Please Enter your Age Category (18+ or 45+)');
                     message.channel.awaitMessages(filter, {
                         max: 1,
                         time: 30000,
@@ -136,34 +135,31 @@ client.on('message', (message) => {
                               Age = message.content
                             }
                             message.react('👍');
-                            // console.log(Age);
+
                             userArray = [{
-                                discordID: Id,
-                                choice: [{
-                                  disID: Dis,
-                                  ageGp: Age,
-                                }]
+                              discordID: Id,
+                              choice: [{
+                                disID: Dis,
+                                ageGp: Age,
                               }]
-                              // console.log(userCMD)
+                            }]
+
 
                             if (userCMD === 'vaccine' || userCMD === 'VACCINE') {
-                              // console.log("in1")
 
                               message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://ik.imagekit.io/nik/thanks-myvac_R0-60xlpN.png"] })
                                 .then(() => {
 
-                                  // console.log(userArray[0])
-
-
                                   userInput = new user(userArray[0])
-
+                                    //adding user data to DB
                                   userInput.save()
                                     .then(() => {
                                       client.users.fetch(Id).then((user) => {
                                         resultDM = sendDM(userArray[0])
+                                          //sends users preferred notification choices in DM
                                         user.send('Hello ' + '<@' + Id + '>' + ' Your selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
-                                        user.send(resultDM)
-                                          //   console.log(distArray)
+                                        user.send(resultDM) //sends DM to user with current slot availability in the selected region
+
                                       });
 
                                     })
@@ -172,22 +168,17 @@ client.on('message', (message) => {
                                     })
                                 })
                             } else if (userCMD === 'check' || userCMD === 'CHECK') {
-                              // console.log("in1")
 
+                              //same as in previous if function but without adding to DB
                               message.channel.send('Thankyou ' + '<@' + Id + '> Check your DM for latest slot update. You can type ``!vaccine`` to register for hourly updates')
                                 .then(() => {
                                   client.users.fetch(Id).then((user) => {
-
                                     resultDM = sendDM(userArray[0])
-
-                                    user.send(resultDM)
+                                    user.send(resultDM) //sends DM to user with current slot availability in the selected region
                                   });
 
-
                                 })
-
                             }
-
 
                           } else {
                             message.channel.send('Wrong Category');
@@ -210,44 +201,30 @@ client.on('message', (message) => {
                   }
                 }
 
-
               })
               .catch(collected => {
                 message.channel.send('Timeout!');
               })
 
-
-
           })
 
         } else if (CMD_NAME === 'unsubscribe') {
           message.react('👋')
-
           Id = message.member.id;
-
           Model.deleteMany({ discordID: Id })
             .then(message.channel.send('<@' + Id + '> Hope you enjoyed my services. You will no longer recieve slot notifications. You can type ``!vaccine`` anytime to add a new district and start recieving alerts... 😊'))
 
-
         }
 
-
       };
-
     }
   }
-
-
 
 )
 
 
-
-
-
 function flow(districtArray) {
   district = districtArray.district_id
-
 
   let date_ob = new Date();
 
@@ -260,21 +237,14 @@ function flow(districtArray) {
   let year = date_ob.getFullYear();
   var formattedDate = date + "-" + month + "-" + year;
 
-  // let hours = date_ob.getHours();
-  // // current minutes
-  // let minutes = date_ob.getMinutes();
-  // // console.log(formattedDate + " [" + hours + ":" + minutes + "]");
+  var array45 = new Array(); //stores result for particualr group temporarily
+  var array18 = new Array(); //stores result for particualr group temporarily
 
-  var array45 = new Array();
-  var array18 = new Array();
+  var result18 = "" //stores result for particualr group temporarily
+  var result45 = "" //stores result for particualr group temporarily
 
-  // centersArray.push(formattedDate + " [" + hours + ":" + minutes + "]");
-
-  var result18 = ""
-  var result45 = ""
-
-  var cap45 = 0
-  var cap18 = 0
+  var cap45 = 0 //stores available capacity for particualr group temporarily
+  var cap18 = 0 //stores available capacity for particualr group temporarily
 
 
 
@@ -370,60 +340,39 @@ function flow(districtArray) {
         result18 = result18.concat(elements + "\n");
 
         ar = ({
-          districtID: district,
-          districtName: dName,
-          cap18: cap18,
-          cap45: cap45,
-          result18: result18,
-          result45: result45
+            districtID: district,
+            districtName: dName,
+            cap18: cap18,
+            cap45: cap45,
+            result18: result18,
+            result45: result45
 
-        })
+          }) //this object stores the whole data of a district and then logs it to an resultsObjectArray with all districts
         log(ar)
-          // console.log(ar)
-
-        // console.log(resultsObjectArray)
-        // return resultsObjectArray;
-
-
 
       }
     })
     .catch(function(error) {
-      // handle error
       console.log(error);
       // console.log("error in cowin response")
     })
 
-
-  //   return aR
-
-
-
-
-  // function ss() {
-  //   console.log("test", distArray)
-  //   console.log()
-  // }
-
-
-
 }
 
+//used to return appropriate response from resultsObjectArray according to user preferences
 function sendDM(userArray) {
 
-  //   console.log("in", resultsObjectArray[0].districtID)
-
   for (var x = 0; x < 16; x++) {
-    // console.log("in56", resultsObjectArray[x].districtID)
+
     if (userArray.choice[0].disID == resultsObjectArray[x].districtID) {
 
       if (userArray.choice[0].ageGp == 18) {
-        // console.log("in1", userArray.choice[0])
+
         mess = resultsObjectArray[x].result18.slice(0, 2000)
         return mess
 
       } else if (userArray.choice[0].ageGp == 45) {
-        // console.log("in2")
+
         mess = resultsObjectArray[x].result45.slice(0, 2000)
         return mess
       }
@@ -432,6 +381,7 @@ function sendDM(userArray) {
 
 }
 
+//used to log district data to specific indexes in order for fast retrieval
 function log(ar) {
 
   switch (ar.districtID) {
@@ -485,16 +435,13 @@ function log(ar) {
       break;
 
   }
-  // console.log("done")
-}
 
+}
 
 const Model = mongoose.model('users', userSchema);
 
-
+//finds users from DB and send them appropriate results
 function sendUser() {
-
-
 
   Model.find(async(err, data) => {
     if (err) {
@@ -509,19 +456,15 @@ function sendUser() {
           dataToSend
         })
 
-
       }
       await Promise.all(sendArray.map(({
         userToSend,
         dataToSend
       }) => (client.users.fetch(userToSend, false).then((user) => {
 
-        // console.log(nx, dataToSend, userToSend)
         user.send(dataToSend)
 
       }))))
-
-
 
     }
   })
