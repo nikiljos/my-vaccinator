@@ -17,12 +17,16 @@ When you type `!vaccine`, required details are collected conversationaly by the 
 
 [Project Demo](https://user-images.githubusercontent.com/57913645/119452734-4eb02000-bd54-11eb-90e0-c60191e19f7a.mp4)
 
+# Bot Commands
+![Bot Commands](https://ik.imagekit.io/nik/newhelp-myvac_jse93D0f3.png)
+
 ## Sample Conversations
 ![Sample Conversation](https://user-images.githubusercontent.com/57913645/119460412-49ef6a00-bd5c-11eb-9aab-5317d6e4f98d.png)
 
 
 ## Packages used
 axios - v0.21.1  
+body-parser - v1.19.0"
 discord.js - v12.5.3  
 dotenv -v9.0.2  
 mongoose - v5.12.10  
@@ -35,5 +39,5 @@ In order to run the bot on your own Server and Database,
 * Run the app using `node bot.js`
 
 ## How to Use
-In a common server type `!vaccine` to invoke the bot and start recieving alerts.  
-The bot is not open for public use as of now so it may not work properly in your discord server unless it is deployed in your own Server and Databases
+In a common server type `!vaccine` in a channel to invoke the bot and start recieving alerts.  
+Type `!help` in a channel to find all the available commands.
