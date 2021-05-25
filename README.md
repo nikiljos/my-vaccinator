@@ -18,7 +18,8 @@ When you type `!vaccine`, required details are collected conversationaly by the 
 [Project Demo](https://user-images.githubusercontent.com/57913645/119452734-4eb02000-bd54-11eb-90e0-c60191e19f7a.mp4)
 
 # Bot Commands
-![Bot Commands](https://ik.imagekit.io/nik/newhelp-myvac_jse93D0f3.png)
+![Bot Commands](https://user-images.githubusercontent.com/57913645/119464855-c97f3800-bd60-11eb-948d-f7a842865120.png)
+
 
 ## Sample Conversations
 ![Sample Conversation](https://user-images.githubusercontent.com/57913645/119460412-49ef6a00-bd5c-11eb-9aab-5317d6e4f98d.png)
