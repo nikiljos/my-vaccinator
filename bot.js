@@ -89,14 +89,16 @@ const user = mongoose.model("user", userSchema)
 client.on('message', (message) => {
     if (message.author.bot) return;
     if (message.guild === null) return; {
-      if (message.content === '!help') //|| message.content === 'Help'
+      if (message.content === '!help' || message.content === '!HELP') //|| message.content === 'Help'
       {
         message.reply('Hello! I sense that you have asked for help', { files: ["https://ik.imagekit.io/nik/help-myvac_IFNQTIibz.png"] });
       }
       if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
 
-        if (CMD_NAME === 'vaccine') {
+        if (CMD_NAME === 'vaccine' || CMD_NAME === 'check' || CMD_NAME === 'VACCINE' || CMD_NAME === 'CHECK') {
+          let userCMD = CMD_NAME
+            // console.log(userCMD)
           message.react('💉')
 
           Id = message.author.id;
@@ -122,7 +124,7 @@ client.on('message', (message) => {
                         time: 30000,
                         errors: ['time']
                       })
-                      .then(ua = message => {
+                      .then(message => {
                         message = message.first()
                         if (message.author.id == Id) {
                           if (message.content == '18' || message.content == '45' || message.content == '18+' || message.content == '45+') {
@@ -136,35 +138,55 @@ client.on('message', (message) => {
                             message.react('👍');
                             // console.log(Age);
                             userArray = [{
-                              discordID: Id,
-                              choice: [{
-                                disID: Dis,
-                                ageGp: Age,
+                                discordID: Id,
+                                choice: [{
+                                  disID: Dis,
+                                  ageGp: Age,
+                                }]
                               }]
-                            }]
+                              // console.log(userCMD)
 
-                            message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://ik.imagekit.io/nik/thanks-myvac_R0-60xlpN.png"] })
-                              .then(() => {
+                            if (userCMD === 'vaccine' || userCMD === 'VACCINE') {
+                              // console.log("in1")
 
-                                // console.log(userArray[0])
+                              message.channel.send('Thankyou ' + '<@' + Id + '> We will fetch the details for you soon\n' + 'Be ready to get vaccinated!', { files: ["https://ik.imagekit.io/nik/thanks-myvac_R0-60xlpN.png"] })
+                                .then(() => {
+
+                                  // console.log(userArray[0])
 
 
-                                userInput = new user(userArray[0])
+                                  userInput = new user(userArray[0])
 
-                                userInput.save()
-                                  .then(() => {
-                                    client.users.fetch(Id).then((user) => {
-                                      resultDM = sendDM(userArray[0])
-                                      user.send('Hello ' + '<@' + Id + '>' + ' Your selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
-                                      user.send(resultDM)
-                                        //   console.log(distArray)
-                                    });
+                                  userInput.save()
+                                    .then(() => {
+                                      client.users.fetch(Id).then((user) => {
+                                        resultDM = sendDM(userArray[0])
+                                        user.send('Hello ' + '<@' + Id + '>' + ' Your selected choices are:\n' + 'Age Category: ' + Age + '\nDistrict ID: ' + Dis);
+                                        user.send(resultDM)
+                                          //   console.log(distArray)
+                                      });
 
-                                  })
-                                  .catch('error', () => {
-                                    console.log(error)
-                                  })
-                              })
+                                    })
+                                    .catch('error', () => {
+                                      console.log(error)
+                                    })
+                                })
+                            } else if (userCMD === 'check' || userCMD === 'CHECK') {
+                              // console.log("in1")
+
+                              message.channel.send('Thankyou ' + '<@' + Id + '> Check your DM for latest slot update. You can type ``!vaccine`` to register for hourly updates')
+                                .then(() => {
+                                  client.users.fetch(Id).then((user) => {
+
+                                    resultDM = sendDM(userArray[0])
+
+                                    user.send(resultDM)
+                                  });
+
+
+                                })
+
+                            }
 
 
                           } else {
@@ -284,8 +306,8 @@ function flow(districtArray) {
 
       // console.log(x)
 
-      array45.push("\n" + dName)
-      array18.push("\n" + dName)
+      array45.push("\n**" + dName + "**")
+      array18.push("\n**" + dName + "**")
 
       var availableCap = 0;
 
