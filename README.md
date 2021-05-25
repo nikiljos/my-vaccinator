@@ -27,7 +27,7 @@ When you type `!vaccine`, required details are collected conversationaly by the 
 
 ## Packages used
 axios - v0.21.1  
-body-parser - v1.19.0"
+body-parser - v1.19.0  
 discord.js - v12.5.3  
 dotenv -v9.0.2  
 mongoose - v5.12.10  
