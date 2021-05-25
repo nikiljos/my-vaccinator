@@ -17,6 +17,15 @@ When you type `!vaccine`, required details are collected conversationaly by the 
 
 [Project Demo](https://user-images.githubusercontent.com/57913645/119452734-4eb02000-bd54-11eb-90e0-c60191e19f7a.mp4)
 
+## Sample Conversations
+![help-mv](https://user-images.githubusercontent.com/57913645/119457406-49a19f80-bd59-11eb-9fef-f2fb7d4a3d1c.png)
+![vaccine-myvac](https://user-images.githubusercontent.com/57913645/119457445-51614400-bd59-11eb-8130-e5ce02a8f25b.png)
+![dm1](https://user-images.githubusercontent.com/57913645/119457465-57572500-bd59-11eb-8a10-ba8154723acb.jpg)
+![-mv](https://user-images.githubusercontent.com/57913645/119457488-5de59c80-bd59-11eb-91e4-3f3b86e03b01.png)
+![dm2](https://user-images.githubusercontent.com/57913645/119457513-65a54100-bd59-11eb-84da-3268b0fe298e.jpg)
+![unsub](https://user-images.githubusercontent.com/57913645/119457525-68079b00-bd59-11eb-8a90-8387cf89fe1a.png)
+
+
 ## Packages used
 axios - v0.21.1  
 discord.js - v12.5.3  
