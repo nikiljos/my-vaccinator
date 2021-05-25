@@ -91,7 +91,7 @@ client.on('message', (message) => {
     if (message.guild === null) return; {
       if (message.content === '!help' || message.content === '!HELP') //|| message.content === 'Help'
       {
-        message.reply('Hello! I sense that you have asked for help', { files: ["https://ik.imagekit.io/nik/help-myvac_IFNQTIibz.png"] });
+        message.reply('Hello! I sense that you have asked for help', { files: ["https://ik.imagekit.io/nik/newhelp-myvac_jse93D0f3.png"] });
       }
       if (message.content.startsWith(PREFIX)) {
         const [CMD_NAME, ...args] = message.content.trim().substring(PREFIX.length).split(/\s+/);
